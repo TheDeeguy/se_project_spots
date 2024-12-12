@@ -1,4 +1,6 @@
 .card__image {
+  margin-bottom: 12px;
+  border-radius: 8px;
   height: 413px;
   width: 100%;
   object-fit: cover;
@@ -13,6 +15,13 @@
   font-family: "Poppins", Arial, Helvetica, sans-serif;
 }
 
+.card__title {
+  font-family: "Poppins" Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
+
 .card__like-btn {
   background-image: url(../images/heart.svg);
   width: 23px;
@@ -22,8 +31,16 @@
   opacity: 40%;
 }
 
+.card__like-btn:hover {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 627px) {
   .card__image {
     height: 288px;
+  }
+
+  .card__image:hover {
+    cursor: pointer;
   }
 }
