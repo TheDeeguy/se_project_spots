@@ -18,6 +18,7 @@
 }
 
 .profile__name {
+  color: #212121;
   margin: 0 0 12px;
   font-weight: 500;
   font-size: 32px;
@@ -32,6 +33,11 @@
 }
 
 .profile__description {
+  color: #212121b2;
+  font-family: "Poppins",Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
   margin: 0;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -48,11 +54,12 @@
   border: none;
   display: flex;
   cursor: pointer;
+  opacity: 0.7;
 }
 
 .profile__edit-btn:hover {
   color: #212121;
-  opacity: 70%;
+  opacity: 1;
 }
 
 .profile__add-btn {
