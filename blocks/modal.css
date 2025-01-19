@@ -97,13 +97,29 @@
   padding: 0 10px;
 }
 
-.modal__container{
-  padding: 12px;
+.modal__form {
+  max-width: 276px;
+  max-height: 248px;
+  gap: 24px;
 }
 
-.modal_-title {
+.modal__container{
+  padding: 12px;
+  max-width: 300px;
+  max-height: 336px;
+  margin-top: 134px;
+  margin-left: 10px;
+  border-radius: 8px;
+  gap: 24px;
+  background-color: #fff;
+}
+
+.modal__title {
   font-size: 20px;
   margin: 10px 0 34px;
+  max-width: 276px;
+  max-height: 40px;
+  justify-content: space-between;
 }
 
 .modal__close-btn {
@@ -117,5 +133,13 @@
 
 .modal__submit-btn {
   width: 100%;
+  max-width: 276px;
+  max-height: 52px;
+  border-radius: 8px;
+  padding-top: 18px;
+  padding-right: 32px;
+  padding-bottom: 18px;
+  padding-left: 32px;
+  gap: 8px;
 }
 }
