@@ -86,15 +86,30 @@ function getCardElement(data) {
   return cardElement;
 }
 
-function openModal(modal) {
-  //editProfileDescriptionInput.value = profileDescription.textContent;
-  //editModalNameInput.value = profileName.textContent;
-  modal.classList.add("modal_opened");
+function handleClickOutside(e) {
+  if (e.target.classList.contains('modal')) {
+    closeModal(e.target)
+  }
 }
+
+function handleEscapeKey(e){
+  if (e.key === "Escape") {
+    const activeModal = document.querySelector(".modal_opened")
+    closeModal(activeModal);
+}
+}
+
+function openModal(modal) {
+  modal.classList.add("modal_opened");
+  modal.addEventListener("mousedown", handleClickOutside);
+  document.addEventListener("keydown", handleEscapeKey);
+};
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
-}
+  modal.removeEventListener("mousedown", handleClickOutside);
+  document.removeEventListener("keydown", handleEscapeKey);
+};
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
