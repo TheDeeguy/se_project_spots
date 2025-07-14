@@ -1,3 +1,12 @@
+import "./index.css";
+
+import {
+  enableValidation,
+  settings,
+  disableButton,
+  resetValidation,
+} from "../scripts/validation.js";
+
 const initialCards = [
   {
     name: "Val Thorens",
@@ -87,29 +96,29 @@ function getCardElement(data) {
 }
 
 function handleClickOutside(e) {
-  if (e.target.classList.contains('modal')) {
-    closeModal(e.target)
+  if (e.target.classList.contains("modal")) {
+    closeModal(e.target);
   }
 }
 
-function handleEscapeKey(e){
+function handleEscapeKey(e) {
   if (e.key === "Escape") {
-    const activeModal = document.querySelector(".modal_opened")
+    const activeModal = document.querySelector(".modal_opened");
     closeModal(activeModal);
-}
+  }
 }
 
 function openModal(modal) {
   modal.classList.add("modal_opened");
   modal.addEventListener("mousedown", handleClickOutside);
   document.addEventListener("keydown", handleEscapeKey);
-};
+}
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
   modal.removeEventListener("mousedown", handleClickOutside);
   document.removeEventListener("keydown", handleEscapeKey);
-};
+}
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -125,30 +134,22 @@ function handleAddCardSubmit(evt) {
   cardsList.prepend(cardElement);
   closeModal(cardModal);
   evt.target.reset();
-  disableButton(cardSubmitBtn);
+  disableButton(cardSubmitBtn, settings);
 }
 
 profileEditButton.addEventListener("click", () => {
   editProfileDescriptionInput.value = profileDescription.textContent;
   editModalNameInput.value = profileName.textContent;
-  resetValidation(profileForm, [editModalNameInput, editProfileDescriptionInput], settings)
+  resetValidation(
+    profileForm,
+    [editModalNameInput, editProfileDescriptionInput],
+    settings
+  );
   openModal(editProfileModal);
-});
-
-editModalCloseBtn.addEventListener("click", () => {
-  closeModal(editProfileModal);
 });
 
 cardModalBtn.addEventListener("click", () => {
   openModal(cardModal);
-});
-
-cardModalCloseBtn.addEventListener("click", () => {
-  closeModal(cardModal);
-});
-
-previewModalCloseBtn.addEventListener("click", () => {
-  closeModal(previewModal);
 });
 
 profileForm.addEventListener("submit", handleProfileFormSubmit);
@@ -159,7 +160,16 @@ cardForm.addEventListener("submit", handleAddCardSubmit);
 //cardsList.append(cardElement);
 //}
 
+const closeButtons = document.querySelectorAll(".modal__close-btn");
+
+closeButtons.forEach((button) => {
+  const popup = button.closest(".modal");
+  button.addEventListener("click", () => closeModal(popup));
+});
+
 initialCards.forEach((item) => {
   const cardElement = getCardElement(item);
   cardsList.append(cardElement);
 });
+
+enableValidation(settings);
