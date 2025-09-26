@@ -88,14 +88,28 @@ const previewModalCaptionEl = previewModal.querySelector(".modal__caption");
 const cardTemplate = document.querySelector("#card-template");
 const cardsList = document.querySelector(".cards__list");
 
-// DELETE CARD
 function handleDeleteCard(cardId, cardElement) {
+  const deleteButton = document.querySelector(
+    ".modal__submit-btn.modal__btn_delete"
+  );
+  const originalText = deleteButton.textContent;
+
+  deleteButton.textContent = "Deleting...";
+
   api
     .deleteCard(cardId)
     .then(() => {
       cardElement.remove();
+      closeModal(deleteModal);
+      selectedCardId = null;
+      selectedCard = null;
     })
-    .catch(console.error);
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      deleteButton.textContent = originalText;
+    });
 }
 
 function handleLike(evt, id) {
@@ -103,7 +117,7 @@ function handleLike(evt, id) {
   const isLiked = likeButton.classList.contains("card__like-btn_liked");
 
   api
-    .changeCardLikeStatus(id, isLiked)
+    .changeCardLikeStatus(id, !isLiked)
     .then((updatedCard) => {
       console.log("🔍 API Response:", updatedCard);
 
@@ -243,11 +257,12 @@ function handleAvatarSubmit(evt) {
   avatarSubmitBtn.textContent = "Saving...";
 
   api
-    .updateUserAvatar({ avatar: avatarInput.value })
+    .updateAvatar({ avatar: avatarInput.value })
     .then((data) => {
       profileAvatar.src = data.avatar;
       closeModal(avatarModal);
       avatarForm.reset();
+      disableButton(avatarSubmitBtn, settings);
     })
     .catch(console.error)
     .finally(() => {
@@ -257,7 +272,7 @@ function handleAvatarSubmit(evt) {
 
 function resetAvatarToDefault() {
   api
-    .updateUserAvatar({ avatar: defaultAvatar })
+    .updateAvatar({ avatar: defaultAvatar })
     .then((data) => {
       profileAvatar.src = data.avatar;
       profileAvatar.alt = profileName.textContent;
@@ -290,14 +305,10 @@ profileForm.addEventListener("submit", handleProfileFormSubmit);
 cardForm.addEventListener("submit", handleAddCardSubmit);
 avatarForm.addEventListener("submit", handleAvatarSubmit);
 
-// DELETE SUBMIT
 deleteForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   if (selectedCardId && selectedCard) {
     handleDeleteCard(selectedCardId, selectedCard);
-    closeModal(deleteModal);
-    selectedCardId = null;
-    selectedCard = null;
   }
 });
 
@@ -314,15 +325,15 @@ enableValidation(settings);
 // ✅ API call happens last, after DOM variables exist
 api
   .getAppInfo()
-  .then(({ user, cards }) => {
-    currentUserId = user._id;
+  .then(([userData, cards]) => {
+    currentUserId = userData._id;
 
-    profileName.textContent = user.name;
-    profileDescription.textContent = user.about;
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
 
     if (profileAvatar) {
-      profileAvatar.src = user.avatar;
-      profileAvatar.alt = user.name;
+      profileAvatar.src = userData.avatar;
+      profileAvatar.alt = userData.name;
     }
 
     cards.forEach((cardData) => {
