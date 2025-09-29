@@ -213,7 +213,7 @@ function handleProfileFormSubmit(evt) {
   saveBtn.textContent = "Saving...";
 
   api
-    .editUserInfo({
+    .updateUserInfo({
       name: editModalNameInput.value,
       about: editProfileDescriptionInput.value,
     })
